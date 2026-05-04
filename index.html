@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Undangan Pernikahan Katolik - Romeo & Juliet</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        gold: '#D4AF37',
+                        dark: '#0f172a',
+                        rose: '#8B0000'
+                    },
+                    fontFamily: {
+                        serif: ['Playfair Display', 'serif'],
+                        sans: ['Montserrat', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    
+    <!-- AOS Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        body { background-color: #0f172a; color: #f8fafc; overflow-x: hidden; }
+        .no-scroll { overflow: hidden; height: 100vh; }
+
+        .cover-bg {
+            background-image: url('https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=2069&auto=format&fit=crop');
+            background-position: center; background-size: cover;
+        }
+
+        .overlay-dark { background: linear-gradient(to bottom, rgba(15, 23, 42, 0.5), rgba(15, 23, 42, 1)); }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .spin-slow { animation: spin 4s linear infinite; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        .petal { position: fixed; top: -10%; z-index: 15; pointer-events: none; user-select: none; animation: fall linear infinite; }
+        @keyframes fall {
+            0% { transform: translateY(-10vh) rotate(0deg) scale(0.5); opacity: 0; }
+            10% { opacity: 0.8; }
+            90% { opacity: 0.8; }
+            100% { transform: translateY(110vh) rotate(360deg) scale(1); opacity: 0; }
+        }
+
+        .door-panel { transition: transform 1.5s cubic-bezier(0.77, 0, 0.175, 1); }
+        .door-left.open { transform: translateX(-100%); }
+        .door-right.open { transform: translateX(100%); }
+        .door-content { transition: opacity 0.5s ease; }
+        .door-content.hidden-content { opacity: 0; pointer-events: none; }
+
+        .door-bg {
+            background-color: #060913;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23d4af37' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        /* ==========================================================
+           ANIMASI PELUKAN FOOTER
+        ========================================================== */
+        @keyframes runWoman {
+            0% { left: -10%; transform: translateY(0) rotate(15deg); opacity: 0; }
+            5% { left: 0%; transform: translateY(-12px) rotate(-10deg); opacity: 1; }
+            10% { left: 10%; transform: translateY(0) rotate(15deg); }
+            15% { left: 20%; transform: translateY(-12px) rotate(-10deg); }
+            20% { left: 30%; transform: translateY(0) rotate(15deg); }
+            25% { left: 40%; transform: translateY(-12px) rotate(-10deg); }
+            30% { left: calc(50% - 10px); transform: translateY(0) rotate(10deg); } 
+            35%, 70% { left: calc(50% - 8px); transform: translateY(0) rotate(5deg); opacity: 1; } 
+            75% { opacity: 0; }
+            100% { left: -10%; opacity: 0; }
+        }
+
+        @keyframes runMan {
+            0% { right: -10%; transform: translateY(0) rotate(-15deg); opacity: 0; }
+            5% { right: 0%; transform: translateY(-12px) rotate(10deg); opacity: 1; }
+            10% { right: 10%; transform: translateY(0) rotate(-15deg); }
+            15% { right: 20%; transform: translateY(-12px) rotate(10deg); }
+            20% { right: 30%; transform: translateY(0) rotate(-15deg); }
+            25% { right: 40%; transform: translateY(-12px) rotate(10deg); }
+            30% { right: calc(50% - 10px); transform: translateY(0) rotate(-10deg); } 
+            35%, 70% { right: calc(50% - 8px); transform: translateY(0) rotate(-5deg); opacity: 1; } 
+            75% { opacity: 0; }
+            100% { right: -10%; opacity: 0; }
+        }
+
+        @keyframes heartPop {
+            0%, 30% { transform: scale(0) translate(-50%, 0); opacity: 0; }
+            35% { transform: scale(1.5) translate(-50%, -20px); opacity: 1; }
+            40% { transform: scale(1) translate(-50%, -25px); opacity: 1; }
+            45% { transform: scale(1.3) translate(-50%, -25px); opacity: 1; }
+            50% { transform: scale(1) translate(-50%, -25px); opacity: 1; }
+            55% { transform: scale(1.3) translate(-50%, -25px); opacity: 1; }
+            60%, 65% { transform: scale(1) translate(-50%, -25px); opacity: 1; }
+            70% { transform: scale(0) translate(-50%, -35px); opacity: 0; }
+            100% { transform: scale(0) translate(-50%, 0); opacity: 0; }
+        }
+
+        .anim-woman { position: absolute; bottom: 0; animation: runWoman 7s infinite ease-in-out; }
+        .anim-man { position: absolute; bottom: 0; animation: runMan 7s infinite ease-in-out; }
+        .anim-heart { position: absolute; bottom: 30px; left: 50%; animation: heartPop 7s infinite ease-in-out; transform-origin: left bottom; }
+    </style>
+</head>
+<body class="antialiased relative no-scroll" id="body-content">
+
+    <div id="rose-petals-container" class="fixed inset-0 pointer-events-none z-15 overflow-hidden"></div>
+
+    <audio id="bg-music" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    </audio>
+
+    <button id="music-toggle" class="fixed bottom-6 right-6 z-40 bg-gold/20 backdrop-blur-md border border-gold p-3 rounded-full opacity-0 pointer-events-none transition-all duration-500 flex items-center justify-center shadow-[0_0_15px_rgba(212,175,55,0.4)] hover:scale-110">
+        <svg id="music-icon" class="w-6 h-6 text-gold spin-slow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path></svg>
+    </button>
+
+    <!-- ================= COVER UNDANGAN ================= -->
+    <div id="invitation-cover" class="fixed inset-0 z-50 flex overflow-hidden pointer-events-none cover-bg">
+        <div id="door-left" class="door-panel door-left absolute top-0 left-0 w-1/2 h-full border-r-2 border-gold flex items-center justify-end pointer-events-auto shadow-[15px_0_40px_rgba(0,0,0,0.8)] z-20 door-bg overflow-hidden">
+            <div class="absolute top-6 bottom-6 left-6 right-2 border-2 border-gold/40 rounded-tl-2xl rounded-bl-2xl border-r-0 pointer-events-none"></div>
+            <div class="absolute top-12 bottom-12 left-12 right-4 border border-gold/20 rounded-tl-xl rounded-bl-xl border-r-0 pointer-events-none"></div>
+            <div class="absolute right-6 top-1/2 -translate-y-1/2 w-3 h-48 bg-gradient-to-b from-gold/10 via-gold to-gold/10 rounded-full border border-gold/40 shadow-[0_0_15px_rgba(212,175,55,0.3)] pointer-events-none"></div>
+            <div class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-[50%] w-64 h-64 text-gold opacity-20 pointer-events-none">
+                <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1"><circle cx="50" cy="50" r="48" /><circle cx="50" cy="50" r="35" /><polygon points="50,2 60,40 98,50 60,60 50,98 40,60 2,50 40,40" fill="currentColor" opacity="0.3"/></svg>
+            </div>
+        </div>
+
+        <div id="door-right" class="door-panel door-right absolute top-0 right-0 w-1/2 h-full border-l-2 border-gold flex items-center justify-start pointer-events-auto shadow-[-15px_0_40px_rgba(0,0,0,0.8)] z-20 door-bg overflow-hidden">
+            <div class="absolute top-6 bottom-6 right-6 left-2 border-2 border-gold/40 rounded-tr-2xl rounded-br-2xl border-l-0 pointer-events-none"></div>
+            <div class="absolute top-12 bottom-12 right-12 left-4 border border-gold/20 rounded-tr-xl rounded-br-xl border-l-0 pointer-events-none"></div>
+            <div class="absolute left-6 top-1/2 -translate-y-1/2 w-3 h-48 bg-gradient-to-b from-gold/10 via-gold to-gold/10 rounded-full border border-gold/40 shadow-[0_0_15px_rgba(212,175,55,0.3)] pointer-events-none"></div>
+            <div class="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-[50%] w-64 h-64 text-gold opacity-20 pointer-events-none">
+                <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1"><circle cx="50" cy="50" r="48" /><circle cx="50" cy="50" r="35" /><polygon points="50,2 60,40 98,50 60,60 50,98 40,60 2,50 40,40" fill="currentColor" opacity="0.3"/></svg>
+            </div>
+        </div>
+
+        <div id="cover-content" class="door-content absolute inset-0 z-30 flex flex-col items-center justify-center text-center px-6 pointer-events-auto">
+            <div class="w-32 h-32 md:w-44 md:h-44 mb-8 rounded-full border-4 border-gold/40 p-2 glass flex items-center justify-center overflow-hidden animate-[pulse_4s_ease-in-out_infinite] shadow-[0_0_40px_rgba(212,175,55,0.3)]">
+                <img src="cincin2.jpg" alt="Cincin Pernikahan" class="w-full h-full object-cover rounded-full">
+            </div>
+            
+            <p class="font-sans text-gold tracking-[0.3em] mb-4 text-[10px] md:text-xs uppercase">Penerimaan Sakramen Perkawinan</p>
+            <h1 class="font-serif text-5xl md:text-7xl mb-8 italic drop-shadow-[0_0_15px_rgba(212,175,55,0.3)] text-white">Romeo & Juliet</h1>
+            
+            <div class="mb-10 text-gray-300 font-sans text-sm bg-[#060913]/80 p-5 rounded-xl backdrop-blur-md border border-gold/20 shadow-xl">
+                <p class="mb-2 text-xs text-gold uppercase tracking-widest">Kepada Yth.</p>
+                <p class="font-semibold text-xl text-white mb-1">Bapak/Ibu/Saudara/I</p>
+            </div>
+            
+            <button id="open-btn" class="group relative px-10 py-4 bg-gold text-[#0a101d] font-sans uppercase tracking-[0.2em] text-sm font-bold hover:bg-white hover:scale-105 hover:shadow-[0_0_30px_rgba(212,175,55,0.6)] transition-all duration-300 rounded shadow-[0_0_15px_rgba(212,175,55,0.4)]">
+                Buka Undangan
+            </button>
+        </div>
+    </div>
+
+    <!-- ================= HERO SECTION UTAMA ================= -->
+    <section class="relative h-screen flex items-center justify-center text-center z-10 overflow-hidden">
+        <img src="berdua.jpeg" alt="Background Pengantin" class="absolute inset-0 w-full h-full object-cover z-0">
+        <div class="absolute inset-0 overlay-dark z-10"></div>
+        <div class="relative z-20 px-4 pt-20">
+            <h1 class="font-serif text-7xl md:text-9xl mb-4 italic drop-shadow-2xl text-white" data-aos="zoom-out" data-aos-duration="2000">Pian & Rista</h1>
+            <p class="font-sans text-xl tracking-widest text-gray-300 mt-6" data-aos="fade-up" data-aos-delay="500">02 . 08 . 2026</p>
+        </div>
+    </section>
+
+    <!-- KUTIPAN ALKITAB -->
+    <section class="pt-24 pb-10 relative z-10">
+        <div class="max-w-3xl mx-auto px-6 text-center" data-aos="fade-up">
+            <p class="font-serif text-xl md:text-2xl text-gray-300 italic leading-relaxed mb-6">
+                "Demikianlah mereka bukan lagi dua, melainkan satu. Karena itu, apa yang telah dipersatukan Allah, tidak boleh diceraikan manusia."
+            </p>
+            <p class="font-sans text-sm tracking-[0.2em] text-gold uppercase font-medium">Matius 19:6</p>
+        </div>
+    </section>
+
+    <!-- KATA PENGANTAR UNDANGAN -->
+    <section class="py-10 relative z-10">
+        <div class="max-w-4xl mx-auto px-6 text-center" data-aos="fade-up" data-aos-delay="200">
+            <div class="flex items-center justify-center gap-4 mb-8 opacity-70">
+                <div class="h-[1px] w-12 md:w-24 bg-gold"></div>
+                <svg class="w-6 h-6 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+                <div class="h-[1px] w-12 md:w-24 bg-gold"></div>
+            </div>
+            <p class="font-sans text-gray-300 text-sm md:text-base leading-loose px-4">
+                Dengan penuh rasa syukur atas kasih karunia Tuhan, kami bermaksud menyelenggarakan Penerimaan Sakramen Perkawinan putra-putri kami. 
+                <br><br>
+                Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir untuk memanjatkan puji syukur serta memberikan doa restu kepada kedua mempelai.
+            </p>
+        </div>
+    </section>
+
+    <!-- PROFIL MEMPELAI -->
+    <section class="py-16 relative z-10">
+        <div class="max-w-5xl mx-auto px-6">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <h2 class="font-serif text-4xl text-gold italic">Sang Mempelai</h2>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-16 text-center">
+                <div data-aos="fade-right">
+                    <div class="relative w-56 h-56 mx-auto mb-8">
+                        <div class="absolute inset-0 rounded-t-full border-2 border-gold rotate-3"></div>
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=600&auto=format&fit=crop" alt="Foto Pria" class="w-full h-full object-cover rounded-t-full relative z-10 shadow-[0_0_20px_rgba(212,175,55,0.2)]">
+                    </div>
+                    <h3 class="font-serif text-4xl text-white mb-2">Romeo Montague</h3>
+                    <div class="w-12 h-[1px] bg-gold mx-auto mb-4"></div>
+                    <p class="font-sans text-gray-400 text-sm leading-relaxed">
+                        Putra sulung dari pasangan<br>
+                        <span class="text-white font-medium">Bapak Maten & Ibu Regina</span>
+                    </p>
+                </div>
+
+                <div data-aos="fade-left" data-aos-delay="200">
+                    <div class="relative w-56 h-56 mx-auto mb-8">
+                        <div class="absolute inset-0 rounded-t-full border-2 border-gold -rotate-3"></div>
+                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=600&auto=format&fit=crop" alt="Foto Wanita" class="w-full h-full object-cover rounded-t-full relative z-10 shadow-[0_0_20px_rgba(212,175,55,0.2)]">
+                    </div>
+                    <h3 class="font-serif text-4xl text-white mb-2">Juliet Capulet</h3>
+                    <div class="w-12 h-[1px] bg-gold mx-auto mb-4"></div>
+                    <p class="font-sans text-gray-400 text-sm leading-relaxed">
+                        Putri bungsu dari pasangan<br>
+                        <span class="text-white font-medium">Bapak Capulet & Ibu Lady</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- GALERI FOTO -->
+    <section class="py-20 relative z-10 overflow-hidden">
+        <div class="text-center mb-12" data-aos="fade-up">
+            <h2 class="font-serif text-4xl text-gold italic">Momen Bahagia</h2>
+            <p class="font-sans text-sm text-gray-400 mt-2 uppercase tracking-widest">Kisah Cinta Kami</p>
+        </div>
+        
+        <div class="relative w-full max-w-4xl mx-auto overflow-hidden rounded-xl bg-white/5 border border-white/10 p-6 shadow-xl" data-aos="zoom-in">
+            <div id="gallery-track" class="flex items-center transition-transform duration-700 ease-in-out gap-4">
+                <div class="flex-shrink-0 w-[calc(50%-8px)] h-[350px] md:h-[480px]">
+                    <img src="berdua1.jpeg" class="w-full h-full object-cover rounded-[50px] md:rounded-[80px] border-2 border-gold/40 shadow-[0_10px_30px_rgba(0,0,0,0.5)]">
+                </div>
+                <div class="flex-shrink-0 w-[calc(50%-8px)] h-[350px] md:h-[480px]">
+                    <img src="berdua2.jpeg" class="w-full h-full object-cover rounded-[50px] md:rounded-[80px] border-2 border-gold/40 shadow-[0_10px_30px_rgba(0,0,0,0.5)]">
+                </div>
+                <div class="flex-shrink-0 w-[calc(50%-8px)] h-[350px] md:h-[480px]">
+                    <img src="berdua3.jpeg" class="w-full h-full object-cover rounded-[50px] md:rounded-[80px] border-2 border-gold/40 shadow-[0_10px_30px_rgba(0,0,0,0.5)]">
+                </div>
+                <div class="flex-shrink-0 w-[calc(50%-8px)] h-[350px] md:h-[480px]">
+                    <img src="berdua4.jpeg" class="w-full h-full object-cover rounded-[50px] md:rounded-[80px] border-2 border-gold/40 shadow-[0_10px_30px_rgba(0,0,0,0.5)]">
+                </div>
+                <div class="flex-shrink-0 w-[calc(50%-8px)] h-[350px] md:h-[480px]">
+                    <img src="berdua.jpeg" class="w-full h-full object-cover rounded-[50px] md:rounded-[80px] border-2 border-gold/40 shadow-[0_10px_30px_rgba(0,0,0,0.5)]">
+                </div>
+            </div>
+
+            <div class="absolute top-0 left-0 h-full w-12 bg-gradient-to-r from-[#0f172a] to-transparent pointer-events-none rounded-l-xl"></div>
+            <div class="absolute top-0 right-0 h-full w-12 bg-gradient-to-l from-[#0f172a] to-transparent pointer-events-none rounded-r-xl"></div>
+        </div>
+    </section>
+
+    <!-- EVENT INFO & GOOGLE MAPS -->
+    <section class="py-20 relative z-10 pb-32">
+        <div class="max-w-6xl mx-auto px-6 grid lg:grid-cols-2 gap-8 md:gap-10">
+            
+            <!-- Lokasi Katedral (AKAD) -->
+            <div class="glass rounded-2xl p-6 md:p-8 border-t border-l border-white/10 flex flex-col" data-aos="fade-up">
+                <div class="text-center mb-6">
+                    <h3 class="font-serif text-2xl mb-1 text-white">Sakramen Perkawinan</h3>
+                    <p class="font-sans text-sm text-gray-300">Pukul 09:00 - 11:00 WITA</p>
+                    <p class="font-sans text-sm text-white font-medium mt-2">Kapela Stasi Wae kara</p>
+                </div>
+                
+                <!-- WADAH PETA YANG DIPAKSA RESPONSIF -->
+                <div class="w-full h-56 md:h-64 mt-auto rounded-xl overflow-hidden border border-white/20 bg-dark/50">
+                    <!-- Ganti link src di bawah ini. JANGAN hapus class="w-full h-full" -->
+                    <iframe 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3329.589152668572!2d120.67746580022184!3d-8.434423026974315!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2db3a5741d97e269%3A0xdfab4135c37f4804!2sKAPELA%20STASI%20WAE%20KARA!5e1!3m2!1sid!2sid!4v1777915077570!5m2!1sid!2sid" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" 
+                        class="w-full h-full" 
+                        style="border:0;" 
+                        allowfullscreen="" 
+                        loading="lazy" 
+                        referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
+                </div>
+            </div>
+
+            <!-- Lokasi Resepsi -->
+            <div class="glass rounded-2xl p-6 md:p-8 border-t border-l border-white/10 flex flex-col" data-aos="fade-up" data-aos-delay="200">
+                <div class="text-center mb-6">
+                    <h3 class="font-serif text-2xl mb-1 text-white">Resepsi Pernikahan</h3>
+                    <p class="font-sans text-sm text-gray-300">Pukul 12:00 WITA - Selesai</p>
+                    <p class="font-sans text-sm text-white font-medium mt-2">Grand Ballroom The Westin Resort</p>
+                </div>
+                
+                <!-- WADAH PETA YANG DIPAKSA RESPONSIF -->
+                <div class="w-full h-56 md:h-64 mt-auto rounded-xl overflow-hidden border border-white/20 bg-dark/50">
+                    <!-- Ganti link src di bawah ini. JANGAN hapus class="w-full h-full" -->
+                    <iframe 
+                        src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d755.4162312647991!2d120.67220226947668!3d-8.434579999475313!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zOMKwMjYnMDQuNSJTIDEyMMKwNDAnMjIuMyJF!5e1!3m2!1sid!2sid!4v1777915987433!5m2!1sid!2sid" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" 
+                        class="w-full h-full" 
+                        style="border:0;" 
+                        allowfullscreen="" 
+                        loading="lazy" 
+                        referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
+                </div>
+            </div>
+
+        </div>
+    </section>
+   <!-- ================= FOOTER PREMIUM ================= -->
+    <footer class="pt-24 pb-12 text-center relative z-10 border-t border-white/10 bg-gradient-to-b from-transparent to-black/60 overflow-hidden">
+        
+        <!-- Pesan Penutup -->
+        <div class="max-w-2xl mx-auto px-6 mb-12" data-aos="fade-up">
+            <p class="font-sans text-gray-400 text-sm md:text-base leading-relaxed italic mb-8">
+                "Merupakan suatu kebahagiaan yang tak terlukiskan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir dan memberikan doa restu. Terima kasih atas segala cinta dan dukungan yang telah mengiringi langkah kami."
+            </p>
+            
+            <!-- Tanda Tangan Digital (Menggunakan font mirip tulisan tangan atau SVG) -->
+            <!-- Catatan: Untuk kemudahan, ini menggunakan font Playfair italic ukuran besar sebagai ilusi tanda tangan -->
+            <div class="flex items-center justify-center gap-4 text-white/80">
+                <span class="font-serif text-4xl transform -rotate-6">Pian</span>
+                <span class="font-sans text-gold text-sm">&</span>
+                <span class="font-serif text-4xl transform -rotate-6">Rista</span>
+            </div>
+        </div>
+
+        <!-- Animasi Lari & Pelukan (Tetap Dipertahankan) -->
+        <div class="relative w-full h-20 max-w-sm mx-auto mb-10 border-b border-white/10 pb-2">
+            <div class="anim-woman text-gold">
+                <svg viewBox="0 0 24 24" fill="currentColor" class="w-8 h-8">
+                    <path d="M12 2C10.9 2 10 2.9 10 4C10 5.1 10.9 6 12 6C13.1 6 14 5.1 14 4C14 2.9 13.1 2 12 2ZM15.4 22L13.9 15H10.1L8.6 22H6.5L9.6 10C9.8 9.2 10.5 8.5 11.4 8.5H12.6C13.5 8.5 14.2 9.2 14.4 10L17.5 22H15.4ZM12 15H12V22H12V15Z"/>
+                </svg>
+            </div>
+            <div class="anim-man text-gold">
+                <svg viewBox="0 0 24 24" fill="currentColor" class="w-8 h-8">
+                    <path d="M12 2C10.9 2 10 2.9 10 4C10 5.1 10.9 6 12 6C13.1 6 14 5.1 14 4C14 2.9 13.1 2 12 2ZM8 22V15H6V8C6 6.9 6.9 6 8 6H16C17.1 6 18 6.9 18 8V15H16V22H13V15H11V22H8Z"/>
+                </svg>
+            </div>
+            <div class="anim-heart text-rose-600">
+                <svg viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                </svg>
+            </div>
+        </div>
+
+        <!-- Hashtag & Watermark -->
+        <div class="mb-8">
+            <p class="font-sans text-gold tracking-[0.2em] text-xs uppercase mb-2">#KisahRomeoJuliet</p>
+            <p class="text-[10px] font-sans uppercase tracking-widest text-gray-500">Deo Gratias</p>
+        </div>
+
+        <!-- Tombol Back to Top -->
+        <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="group mx-auto flex flex-col items-center justify-center text-gray-500 hover:text-gold transition-colors duration-300">
+            <div class="w-10 h-10 border border-gray-600 group-hover:border-gold rounded-full flex items-center justify-center mb-2 transition-all duration-300 group-hover:-translate-y-2">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg>
+            </div>
+            <span class="text-[9px] uppercase tracking-widest">Kembali ke Atas</span>
+        </button>
+
+    </footer>
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({ duration: 1200, once: true, easing: 'ease-out-cubic' });
+
+        const coverContainer = document.getElementById('invitation-cover');
+        const doorLeft = document.getElementById('door-left');
+        const doorRight = document.getElementById('door-right');
+        const coverContent = document.getElementById('cover-content');
+        const openBtn = document.getElementById('open-btn');
+        const bodyContent = document.getElementById('body-content');
+        const bgMusic = document.getElementById('bg-music');
+        const musicToggle = document.getElementById('music-toggle');
+        const musicIcon = document.getElementById('music-icon');
+        let isMusicPlaying = false;
+
+        openBtn.addEventListener('click', () => {
+            coverContent.classList.add('hidden-content');
+            setTimeout(() => {
+                doorLeft.classList.add('open');
+                doorRight.classList.add('open');
+                bgMusic.play();
+                isMusicPlaying = true;
+                createRosePetals();
+            }, 400); 
+
+            setTimeout(() => {
+                coverContainer.style.display = 'none'; 
+                bodyContent.classList.remove('no-scroll'); 
+                musicToggle.classList.remove('opacity-0', 'pointer-events-none');
+            }, 1900); 
+        });
+
+        musicToggle.addEventListener('click', () => {
+            if (isMusicPlaying) {
+                bgMusic.pause();
+                musicIcon.classList.remove('spin-slow');
+                musicIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" clip-rule="evenodd" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2" />`;
+            } else {
+                bgMusic.play();
+                musicIcon.classList.add('spin-slow');
+                musicIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path>`;
+            }
+            isMusicPlaying = !isMusicPlaying;
+        });
+
+        function createRosePetals() {
+            const container = document.getElementById('rose-petals-container');
+            const petalCount = 25;
+            const petalSVG = `<svg viewBox="0 0 512 512" width="24" height="24" opacity="0.6" fill="#8B0000"><path d="M439.9,139.5c-43.2-54.8-118.8-68.5-179.3-31.5c-60.5-37-136.1-23.3-179.3,31.5c-48.4,61.4-42.5,153.9,13.7,208.5L250.3,491.1c2.8,2.7,7.2,2.7,10,0l155.3-143.1C482.4,293.4,488.3,200.9,439.9,139.5z"/></svg>`;
+
+            for (let i = 0; i < petalCount; i++) {
+                let petal = document.createElement('div');
+                petal.classList.add('petal');
+                petal.innerHTML = petalSVG;
+                let posX = Math.random() * 100;
+                let delay = Math.random() * 15;
+                let duration = 10 + Math.random() * 10;
+                petal.style.left = `${posX}vw`;
+                petal.style.animationDelay = `${delay}s`;
+                petal.style.animationDuration = `${duration}s`;
+                let size = 0.5 + Math.random() * 1;
+                petal.style.transform = `scale(${size})`;
+                container.appendChild(petal);
+            }
+        }
+
+        const galleryTrack = document.getElementById('gallery-track');
+        let isGalleryTransitioning = false;
+
+        function slideGallery() {
+            if (isGalleryTransitioning) return;
+            isGalleryTransitioning = true;
+            
+            galleryTrack.style.transition = 'transform 0.8s cubic-bezier(0.25, 1, 0.5, 1)';
+            galleryTrack.style.transform = 'translateX(calc(-50% - 8px))';
+
+            galleryTrack.addEventListener('transitionend', function onTransitionEnd() {
+                galleryTrack.style.transition = 'none';
+                galleryTrack.style.transform = 'translateX(0)';
+                
+                galleryTrack.appendChild(galleryTrack.firstElementChild);
+                
+                galleryTrack.removeEventListener('transitionend', onTransitionEnd);
+                isGalleryTransitioning = false;
+            });
+        }
+
+        setInterval(slideGallery, 3500);
+    </script>
+</body>
+</html>
